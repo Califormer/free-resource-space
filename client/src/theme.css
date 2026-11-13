@@ -1,0 +1,147 @@
+/* Web-font slot: uncomment the line below and put your font there. A web-font
+   @import must come before the Tailwind import — an @import placed after any
+   other rule is a build error, and it is reported against a line number in the
+   expanded Tailwind output, far past the end of this file, so the message
+   cannot point you at the mistake. */
+/* @import url('https://fonts.googleapis.com/css2?family=Your+Font:wght@400..700&display=swap'); */
+@import "tailwindcss";
+@import "tailwindcss-safe-area";
+
+@theme {
+  --text-xs: 12px;
+  --text-xs--line-height: 16px;
+  --text-sm: 14px;
+  --text-sm--line-height: 20px;
+  --text-base: 16px;
+  --text-base--line-height: 24px;
+  --text-lg: 18px;
+  --text-lg--line-height: 28px;
+  --text-xl: 20px;
+  --text-xl--line-height: 28px;
+  --text-2xl: 24px;
+  --text-2xl--line-height: 32px;
+  --text-3xl: 30px;
+  --text-3xl--line-height: 36px;
+  --text-4xl: 36px;
+  --text-4xl--line-height: 40px;
+  --text-5xl: 48px;
+  --text-5xl--line-height: 52px;
+}
+
+/* 第 2 轮定案：深色为默认主题，右上开关可切浅色（状态存 localStorage）。
+   深色 token（实测对比度 WCAG AA）：页面底 #16181d、卡片 #1e2126、次要表面
+   #15171b、边框 #2e3238、主文字 #e8e9eb（对卡片 13.29:1）、次要文字 #9aa0a6
+   （6.11:1）、强调绿提亮版 #22c55e（7.09:1）/ #4ade80（9.27:1，焦点环与小字）。
+   已读态三重区分：卡底 #1a1d21 + 标题转次要色 + “已读”标记，透明度只降到 0.8。 */
+:root {
+  color-scheme: dark;
+  --bg: #16181d;
+  --surface: #1e2126;
+  --surface-read: #1a1d21;
+  --text: #e8e9eb;
+  --dim: #9aa0a6;
+  --border: #2e3238;
+  --accent: #22c55e;
+  --accent-bright: #4ade80;
+  --warn: #f59e0b;
+  --radius: 12px;
+  --space-surface: var(--surface);
+  --space-surface-alt: #15171b;
+  --space-muted: var(--dim);
+  --space-border: var(--border);
+  --space-accent: var(--accent);
+  --on-accent: #07130c;
+  --on-text: #16181d;
+  --switch-off: #3a3f46;
+  --read-opacity: 0.8;
+  --focus: #4ade80;
+}
+
+/* 浅色主题沿用第 1 轮 token：页面底 #f7f7f5、白卡、边框 #e5e5e0、绿 #16a34a，
+   已读沿用 opacity 0.55。 */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f7f7f5;
+  --surface: #ffffff;
+  --surface-read: #ffffff;
+  --text: #1c2321;
+  --dim: #68706b;
+  --border: #e5e5e0;
+  --accent: #16a34a;
+  --accent-bright: #16a34a;
+  --warn: #d97706;
+  --space-surface-alt: #efefeb;
+  --on-accent: #ffffff;
+  --on-text: #ffffff;
+  --switch-off: #c9ccc4;
+  --read-opacity: 0.55;
+  --focus: #16a34a;
+}
+
+/* Phone tap targets: at least 32px tall. */
+@layer base {
+  button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) {
+    min-height: 2rem;
+  }
+}
+
+/* 键盘可见焦点（分页按钮、Tab、开关、筛选片、跳转输入统一） */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* 统计条：桌面 4 格一行；<640px 改 2×2，数字 clamp 缩字号不截断、标签单行 */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.stat-num {
+  font-size: clamp(20px, 2.2vw, 24px);
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.stat-label {
+  font-size: 12.5px;
+  color: var(--dim);
+  margin-top: 2px;
+  white-space: nowrap;
+}
+@media (max-width: 639px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* 来源 TabList：原生横向滚动（不加自定义滚动控件），隐藏滚动条避免占位溢出 */
+.tab-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.tab-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* 分页：手机上收起页码按钮，只留上一页 / 第 X / Y 页 / 下一页 + 跳转输入 */
+.pager-numbers {
+  display: contents;
+}
+@media (max-width: 639px) {
+  .pager-numbers {
+    display: none;
+  }
+}
+
+/* 减少动态效果：关掉开关滑动等过渡动画与平滑滚动 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}

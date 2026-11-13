@@ -1,0 +1,48 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1794496340918,
+      "tag": "0001_initial",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1794496340918,
+      "tag": "0002_posts_sources_logs_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1794536688836,
+      "tag": "0003_add_catalog_structured_fields",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1794537743173,
+      "tag": "0004_add_scores_and_verified_overlay",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1794539413841,
+      "tag": "0005_add_title_override_column",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1794540930400,
+      "tag": "0006_add_quota_and_summary_override_columns",
+      "breakpoints": true
+    }
+  ]
+}

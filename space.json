@@ -1,0 +1,8 @@
+{
+  "runtime": "typescript",
+  "platformVersion": 28,
+  "entry": "client/dist/index.html",
+  "name": "羊毛空间",
+  "slug": "yang-mao-kong-jian",
+  "managedCronJobs": ["yangmao-hourly-refresh"]
+}

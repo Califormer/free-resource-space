@@ -1,0 +1,81 @@
+{
+  "exportedAtUTC": "2026-11-13T06:35:03.821427Z",
+  "lastRefreshAt": "2026-11-13T06:13:56.657Z",
+  "cap": 700,
+  "total": 612,
+  "unreadCount": 608,
+  "todayPickCount": 102,
+  "categoryCounts": [
+    {
+      "category": "大模型 API",
+      "count": 282
+    },
+    {
+      "category": "AI 应用试用",
+      "count": 181
+    },
+    {
+      "category": "云服务",
+      "count": 1
+    },
+    {
+      "category": "开发工具",
+      "count": 67
+    },
+    {
+      "category": "免费算力",
+      "count": 21
+    }
+  ],
+  "keywordCounts": [
+    {
+      "count": 2,
+      "id": "gpt",
+      "label": "GPT"
+    },
+    {
+      "count": 10,
+      "id": "claude",
+      "label": "Claude"
+    },
+    {
+      "count": 4,
+      "id": "muse",
+      "label": "Muse"
+    },
+    {
+      "count": 13,
+      "id": "gemini",
+      "label": "Gemini"
+    },
+    {
+      "count": 0,
+      "id": "vps",
+      "label": "VPS"
+    },
+    {
+      "count": 1,
+      "id": "jiakuan",
+      "label": "家宽IP"
+    }
+  ],
+  "catalogSources": [
+    "lanmao",
+    "aihot",
+    "jidan",
+    "baipiaoji"
+  ],
+  "scheduleNote": "每小时自动刷新一次（定时任务与手动刷新走同一流水线）",
+  "sourceStoredCounts": {
+    "linuxdo": 2,
+    "v2ex": 29,
+    "nodeseek": 7,
+    "x": 0,
+    "threads": 5,
+    "sliverkiss": 17,
+    "lanmao": 338,
+    "aihot": 57,
+    "jidan": 26,
+    "baipiaoji": 131
+  }
+}

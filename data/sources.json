@@ -1,0 +1,112 @@
+[
+  {
+    "error": "LINUX DO: ECONNRESET: The socket connection was closed unexpectedly. For more information, pass `verbose: true` in the second argument to fetch()",
+    "fetchedCount": 0,
+    "label": "LINUX DO",
+    "lagHours": null,
+    "lastAttemptAt": "2026-11-13T06:13:15.364Z",
+    "lastSuccessAt": "2026-11-12T15:35:16.899Z",
+    "source": "linuxdo",
+    "status": "failed",
+    "storedCount": 2
+  },
+  {
+    "error": null,
+    "fetchedCount": 55,
+    "label": "V2EX",
+    "lagHours": null,
+    "lastAttemptAt": "2026-11-13T06:13:15.364Z",
+    "lastSuccessAt": "2026-11-13T06:13:15.364Z",
+    "source": "v2ex",
+    "status": "ok",
+    "storedCount": 29
+  },
+  {
+    "error": "NodeSeek: ECONNRESET: The socket connection was closed unexpectedly. For more information, pass `verbose: true` in the second argument to fetch()",
+    "fetchedCount": 0,
+    "label": "NodeSeek",
+    "lagHours": null,
+    "lastAttemptAt": "2026-11-13T06:13:15.364Z",
+    "lastSuccessAt": "2026-11-13T03:21:00.811Z",
+    "source": "nodeseek",
+    "status": "failed",
+    "storedCount": 7
+  },
+  {
+    "error": "公开搜索未找到符合严格链接格式的 X 帖子",
+    "fetchedCount": 0,
+    "label": "X",
+    "lagHours": null,
+    "lastAttemptAt": "2026-11-13T06:13:15.364Z",
+    "lastSuccessAt": "2026-11-13T06:13:15.364Z",
+    "source": "x",
+    "status": "empty",
+    "storedCount": 0
+  },
+  {
+    "error": null,
+    "fetchedCount": 3,
+    "label": "Threads",
+    "lagHours": null,
+    "lastAttemptAt": "2026-11-13T06:13:15.364Z",
+    "lastSuccessAt": "2026-11-13T06:13:15.364Z",
+    "source": "threads",
+    "status": "ok",
+    "storedCount": 5
+  },
+  {
+    "error": null,
+    "fetchedCount": 20,
+    "label": "Sliverkiss",
+    "lagHours": null,
+    "lastAttemptAt": "2026-11-13T06:13:15.364Z",
+    "lastSuccessAt": "2026-11-13T06:13:15.364Z",
+    "source": "sliverkiss",
+    "status": "ok",
+    "storedCount": 17
+  },
+  {
+    "error": null,
+    "fetchedCount": 341,
+    "label": "懒猫 AI",
+    "lagHours": null,
+    "lastAttemptAt": "2026-11-13T06:13:15.364Z",
+    "lastSuccessAt": "2026-11-13T06:13:15.364Z",
+    "source": "lanmao",
+    "status": "ok",
+    "storedCount": 338
+  },
+  {
+    "error": null,
+    "fetchedCount": 57,
+    "label": "AIHot Token 羊毛",
+    "lagHours": null,
+    "lastAttemptAt": "2026-11-13T06:13:15.364Z",
+    "lastSuccessAt": "2026-11-13T06:13:15.364Z",
+    "source": "aihot",
+    "status": "ok",
+    "storedCount": 57
+  },
+  {
+    "error": null,
+    "fetchedCount": 25,
+    "label": "赛博鸡蛋",
+    "lagHours": null,
+    "lastAttemptAt": "2026-11-13T06:13:15.364Z",
+    "lastSuccessAt": "2026-11-13T06:13:15.364Z",
+    "source": "jidan",
+    "status": "ok",
+    "storedCount": 26
+  },
+  {
+    "error": null,
+    "fetchedCount": 131,
+    "label": "白嫖计",
+    "lagHours": 198,
+    "lastAttemptAt": "2026-11-13T06:13:15.364Z",
+    "lastSuccessAt": "2026-11-13T06:13:15.364Z",
+    "source": "baipiaoji",
+    "status": "ok",
+    "storedCount": 131
+  }
+]
