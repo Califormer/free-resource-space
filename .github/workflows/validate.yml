@@ -1,0 +1,59 @@
+name: Validate export
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 3 * * 0"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate data files
+        run: |
+          python3 - <<'PY'
+          import json, csv
+
+          with open("data/getstate.json", encoding="utf-8") as f:
+              state = json.load(f)
+          with open("data/sources.json", encoding="utf-8") as f:
+              json.load(f)
+          with open("data/stats.json", encoding="utf-8") as f:
+              json.load(f)
+
+          total = state.get("total")
+          posts = state.get("posts")
+          assert isinstance(posts, list), "getstate.posts is not a list"
+          assert total is not None, "getstate.total is missing"
+          assert len(posts) == total, (
+              f"getstate.posts ({len(posts)}) != getstate.total ({total})"
+          )
+
+          with open("data/posts.csv", encoding="utf-8-sig", newline="") as f:
+              rows = list(csv.DictReader(f))
+          assert len(rows) == total, (
+              f"posts.csv rows ({len(rows)}) != getstate.total ({total})"
+          )
+          assert rows, "posts.csv is empty"
+          assert "title" in rows[0] and "source" in rows[0], "posts.csv missing columns"
+          print(f"OK: {len(rows)} posts, data JSON parses")
+          PY
+
+      # NOTE: data/ is excluded on purpose. It is generated deal content:
+      # offer instructions legitimately mention "API Key" / "APISecret"
+      # (how to obtain a free key), which is not a committed credential.
+      # Docs (*.md) and .gitignore only mention the words in prose/comments.
+      - name: Scan for secrets
+        run: |
+          if grep -rniE '(api[_-]?key|secret|password|private[_-]?key|bearer[[:space:]]+[A-Za-z0-9._-]{16,})' \
+              --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=data \
+              --exclude='*.md' --exclude='.gitignore' --exclude='validate.yml' .; then
+            echo "ERROR: possible secret pattern found" >&2
+            exit 1
+          fi
+          echo "OK: no secret patterns found"
