@@ -2,7 +2,7 @@
 
 羊毛空间 Yangmao Space
 
-[![Release](https://img.shields.io/github/v/release/Califormer/free-resource-space)](https://github.com/Califormer/free-resource-space/releases/tag/v14) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Califormer/free-resource-space/blob/main/LICENSE)
+[![Release](https://img.shields.io/github/v/release/Califormer/free-resource-space)](https://github.com/Califormer/free-resource-space/releases/tag/v17) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Califormer/free-resource-space/blob/main/LICENSE)
 
 > **GLOBAL DEAL HUNTER｜全球羊毛情报中心**——免费额度雷达
 >
@@ -23,16 +23,22 @@
 
 ### 数据快照
 
-导出时刻：2026-11-13T06:13:56Z（UTC）
+导出时刻：2026-11-13T08:30:39.251Z（UTC）
 
 | 指标 | 数值 |
 |---|---|
-| 帖子总数 / 上限 | 612 / 700 |
-| 未读 | 608 |
-| 今日精选 | 102 |
-| 已核实 | 464 |
+| 帖子总数 / 上限 | 624 / 700 |
+| 未读 | 620 |
+| 今日精选 | 110 |
+| 已核实 | 463 |
 
 分类（目录帖 552 条）：大模型 API 282、AI 应用试用 181、云服务 1、开发工具 67、免费算力 21。
+
+### 最近更新（v15 → v17）
+
+- v15：筛选区回归顶部 + 分类 chips（来源 TabList 与筛选卡移回统计条之下、三区之上；新增分类 chips 与其它筛选条件 AND 组合）。
+- v16：翻页与筛选修复——叠加筛选到 0 条时分页控件整体消失、按钮看似无反应；筛选卡与空状态各加「清除全部筛选」按钮，列表上方加「共 N 条 · 第 X / Y 页」计数行。
+- v17：三区筛选修复——今日新上 / 即将到期 / 分类情报三区改为与主列表共用统一筛选谓词，来源 / 分类 / 开关 / 标签 / 搜索对首屏三区同样生效；筛选卡下方加「当前筛选：共 N 条结果」横幅；搜索匹配范围新增标题 / 简介覆盖文字。
 
 ### 功能
 
@@ -78,12 +84,12 @@ server/src/             服务端：actions.ts（7 个 action）、refresh.ts（
                         overrides.ts（人工核实回填）、schema.ts（数据模型）
 drizzle/                数据库迁移 0001–0006
 space.json              空间配置（slug: yang-mao-kong-jian，每小时刷新 cron）
-data/                   数据快照：getstate.json（612 条全量）、posts.csv、
+data/                   数据快照：getstate.json（624 条全量）、posts.csv、
                         sources.json、stats.json
 羊毛空间-复刻提示词.md    给全新 Muse 的完整复刻提示词（路线 A 原样恢复 / 路线 B 按规格重建）
 DATA-PLAN.md            数据源与设计口径记录
 AGENTS.md               构建说明
-versions.md             v5–v14 版本大事记
+versions.md             v5–v17 版本大事记
 CONTRIBUTING.md 等        社区文件：贡献指南、安全政策、行为准则、更新日志
 .github/                Issue 模板、PR 模板、数据校验 CI
 ```
@@ -124,16 +130,22 @@ It is **not** a scrape-everything aggregator, and **not** an AI-generated list: 
 
 ### Data snapshot
 
-Exported at 2026-11-13T06:13:56Z (UTC).
+Exported at 2026-11-13T08:30:39.251Z (UTC).
 
 | Metric | Value |
 |---|---|
-| Total posts / cap | 612 / 700 |
-| Unread | 608 |
-| Today's picks | 102 |
-| Verified | 464 |
+| Total posts / cap | 624 / 700 |
+| Unread | 620 |
+| Today's picks | 110 |
+| Verified | 463 |
 
 Categories (552 catalog posts): LLM API 282, AI app trials 181, cloud services 1, dev tools 67, free compute 21.
+
+### Recent changes (v15 → v17)
+
+- v15: filter panel back to the top, plus category chips (source tabs and the filter card moved back above the three sections; new category chips combine with the other filters with AND).
+- v16: pagination and filter fix — when filters matched 0 posts the pager disappeared entirely and buttons looked dead; added a "Clear all filters" button to the filter card and to the empty state, plus a "N results · page X / Y" counter row above the list.
+- v17: three-section filter fix — New today / Expiring soon / Browse by category now share one filter predicate with the main list, so source, category, switches, tags and search apply to the home sections too; a "Currently filtered: N results" banner was added under the filter card; search now also matches title/summary override text.
 
 ### Features
 
@@ -180,13 +192,13 @@ server/src/             Server: actions.ts (7 actions), refresh.ts (refresh pipe
                         schema.ts (data model)
 drizzle/                Database migrations 0001–0006
 space.json              Space config (slug: yang-mao-kong-jian, hourly refresh cron)
-data/                   Data snapshot: getstate.json (all 612 posts), posts.csv,
+data/                   Data snapshot: getstate.json (all 624 posts), posts.csv,
                         sources.json, stats.json
 羊毛空间-复刻提示词.md    Full rebuild prompt for a fresh Muse (Route A: verbatim restore /
                         Route B: rebuild from spec; in Chinese)
 DATA-PLAN.md            Source and design-notes record
 AGENTS.md               Build notes
-versions.md             Version history, v5–v14
+versions.md             Version history, v5–v17
 CONTRIBUTING.md etc.    Community files: contributing guide, security policy,
                         code of conduct, changelog
 .github/                Issue templates, PR template, data-validation CI
