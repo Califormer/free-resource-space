@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 参与贡献 / Contributing
+    url: https://github.com/Califormer/free-resource-space/blob/main/CONTRIBUTING.md
+    about: 开始贡献前请先读贡献指南 / Read the contributing guide before contributing

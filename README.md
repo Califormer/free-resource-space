@@ -2,6 +2,8 @@
 
 羊毛空间 Yangmao Space
 
+[![Release](https://img.shields.io/github/v/release/Califormer/free-resource-space)](https://github.com/Califormer/free-resource-space/releases/tag/v14) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Califormer/free-resource-space/blob/main/LICENSE)
+
 > **GLOBAL DEAL HUNTER｜全球羊毛情报中心**——免费额度雷达
 >
 > 聚合全网免费 AI 额度、试用与云服务情报：可搜索、可筛选、可评分、可核实。
@@ -82,6 +84,8 @@ data/                   数据快照：getstate.json（612 条全量）、posts.
 DATA-PLAN.md            数据源与设计口径记录
 AGENTS.md               构建说明
 versions.md             v5–v14 版本大事记
+CONTRIBUTING.md 等        社区文件：贡献指南、安全政策、行为准则、更新日志
+.github/                Issue 模板、PR 模板、数据校验 CI
 ```
 
 ### 如何复刻 / 部署
@@ -97,6 +101,10 @@ versions.md             v5–v14 版本大事记
 ### 许可
 
 MIT License，见 [LICENSE](LICENSE)。
+
+### 参与贡献
+
+想纠正数据、报 Bug 或提功能？请看 [CONTRIBUTING.md](CONTRIBUTING.md)；更新记录见 [CHANGELOG.md](CHANGELOG.md)；安全问题请看 [SECURITY.md](SECURITY.md)。
 
 ### 免责声明
 
@@ -179,6 +187,9 @@ data/                   Data snapshot: getstate.json (all 612 posts), posts.csv,
 DATA-PLAN.md            Source and design-notes record
 AGENTS.md               Build notes
 versions.md             Version history, v5–v14
+CONTRIBUTING.md etc.    Community files: contributing guide, security policy,
+                        code of conduct, changelog
+.github/                Issue templates, PR template, data-validation CI
 ```
 
 ### How to rebuild / deploy
@@ -194,6 +205,10 @@ versions.md             Version history, v5–v14
 ### License
 
 MIT License, see [LICENSE](LICENSE).
+
+### Contributing
+
+Want to correct data, report a bug, or request a feature? See [CONTRIBUTING.md](CONTRIBUTING.md); changes are listed in [CHANGELOG.md](CHANGELOG.md); security issues are covered by [SECURITY.md](SECURITY.md).
 
 ### Disclaimer
 
