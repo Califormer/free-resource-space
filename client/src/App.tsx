@@ -843,12 +843,17 @@ export function App() {
     [data],
   );
 
-  const filtered = useMemo(() => {
-    if (!data) return [];
+  // 统一筛选谓词：主列表与首页三区共用同一套条件（来源/未读/精选/类型/
+  // 重点词/网关/搜索词+范围）。withCategory=false 时不看分类条件——分类
+  // 情报区由它自己的 chip 决定分类，其余条件照常生效。
+  // 历史教训：三区曾绕过筛选直接用全量目录帖，用户点来源/分类/搜索后
+  // 首屏纹丝不动，看起来像按钮全坏。这次三区必须跟筛选联动。
+  const applyFilters = (posts: Post[], withCategory: boolean): Post[] => {
     const q = query.trim().toLowerCase();
-    return data.posts.filter((p) => {
+    return posts.filter((p) => {
       if (sourceFilter !== "all" && p.source !== sourceFilter) return false;
-      if (categoryFilter !== "all" && p.category !== categoryFilter) return false;
+      if (withCategory && categoryFilter !== "all" && p.category !== categoryFilter)
+        return false;
       if (unreadOnly && p.isRead) return false;
       if (todayOnly && !p.todayPick) return false;
       if (types.length > 0 && !types.some((t) => p.tags.includes(t))) return false;
@@ -857,38 +862,60 @@ export function App() {
       if (q) {
         // 搜索范围：默认目录四站，可切换全库（范围只在有关键词时生效）
         if (searchScope === "catalog" && !catalogSet.has(p.source)) return false;
-        // 三字段匹配：标题 + 摘要 + 厂商/来源名（不做拼音、不做模糊）
+        // 匹配字段：标题 + 摘要 + 厂商/来源名；标题/简介有核实覆盖时
+        // 覆盖值就是卡片上显示的文字，一并纳入匹配（不做拼音、不做模糊）
         const hit =
           p.title.toLowerCase().includes(q) ||
+          (p.titleOverride ?? "").toLowerCase().includes(q) ||
           p.summary.toLowerCase().includes(q) ||
+          (p.summaryOverride ?? "").toLowerCase().includes(q) ||
           (p.vendor ?? "").toLowerCase().includes(q) ||
           p.sourceLabel.toLowerCase().includes(q);
         if (!hit) return false;
       }
       return true;
     });
-  }, [data, sourceFilter, categoryFilter, unreadOnly, todayOnly, types, keyword, gatewayOnly, query, searchScope, catalogSet]);
+  };
+
+  const filtered = useMemo(
+    () => (data ? applyFilters(data.posts, true) : []),
+    // applyFilters 只读下列状态，依赖列全即可
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [data, sourceFilter, categoryFilter, unreadOnly, todayOnly, types, keyword, gatewayOnly, query, searchScope, catalogSet],
+  );
 
   // 首页三区（只含目录四站条目；论坛/Sliverkiss 留在下方主列表）
   const catalogPosts = useMemo(
     () => (data ? data.posts.filter((p) => catalogSet.has(p.source)) : []),
     [data, catalogSet],
   );
+  // 三区用的筛选后目录帖：今日新上/即将到期吃全套条件（含分类），
+  // 分类情报吃除分类外的条件（分类由该区 chip 决定）
+  const catalogFiltered = useMemo(
+    () => applyFilters(catalogPosts, true),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [catalogPosts, sourceFilter, categoryFilter, unreadOnly, todayOnly, types, keyword, gatewayOnly, query, searchScope, catalogSet],
+  );
+  const catalogFilteredNoCategory = useMemo(
+    () => applyFilters(catalogPosts, false),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [catalogPosts, sourceFilter, unreadOnly, todayOnly, types, keyword, gatewayOnly, query, searchScope, catalogSet],
+  );
   const DAY_MS = 24 * 3600 * 1000;
   const nowMs = Date.now();
   const newToday = useMemo(
     () =>
-      catalogPosts.filter(
+      catalogFiltered.filter(
         (p) =>
           p.verifiedStatus !== "ended" &&
           (nowMs - Date.parse(p.publishedAt) <= DAY_MS ||
             nowMs - Date.parse(p.firstSeen) <= DAY_MS),
       ),
-    [catalogPosts, nowMs, DAY_MS],
+    [catalogFiltered, nowMs, DAY_MS],
   );
   const expiring = useMemo(
     () =>
-      catalogPosts
+      catalogFiltered
         .filter((p) => {
           if (p.verifiedStatus === "ended") return false;
           if (!p.deadline) return false;
@@ -896,11 +923,11 @@ export function App() {
           return diff > 0 && diff <= 30 * DAY_MS;
         })
         .sort((a, b) => Date.parse(a.deadline as string) - Date.parse(b.deadline as string)),
-    [catalogPosts, nowMs, DAY_MS],
+    [catalogFiltered, nowMs, DAY_MS],
   );
   const zonePosts = useMemo(
-    () => catalogPosts.filter((p) => p.category === zoneCategory).slice(0, 10),
-    [catalogPosts, zoneCategory],
+    () => catalogFilteredNoCategory.filter((p) => p.category === zoneCategory).slice(0, 10),
+    [catalogFilteredNoCategory, zoneCategory],
   );
 
   // 列表排序（作用于当前筛选结果全集）：
@@ -942,6 +969,37 @@ export function App() {
 
   const toggleIn = (list: string[], v: string, set: (x: string[]) => void) =>
     set(list.includes(v) ? list.filter((x) => x !== v) : [...list, v]);
+
+  // 一键清除全部筛选，回到默认视图（默认：全部来源/分类、仅看未读开、
+  // 综合排名、搜索清空、范围目录四站）。筛选筛出 0 条时用户靠它恢复列表与翻页，
+  // 避免改了某个筛选后列表纹丝不动、无从下手。
+  const resetFilters = () => {
+    setSourceFilter("all");
+    setCategoryFilter("all");
+    setUnreadOnly(true);
+    setTodayOnly(false);
+    setTypes([]);
+    setKeyword(null);
+    setGatewayOnly(false);
+    setSortMode("rank");
+    setQuery("");
+    setSearchScope("catalog");
+    setZoneCategory("大模型 API");
+    setPage(1);
+  };
+
+  // 是否有任一筛选偏离默认视图（默认：全部来源/分类、仅看未读开、
+  // 搜索为空）。偏离时筛选卡下方显示结果计数横幅，让每次点按在
+  // 首屏立刻有可见反馈，而不是要滑过三区才看到主列表变化。
+  const filtersActive =
+    sourceFilter !== "all" ||
+    categoryFilter !== "all" ||
+    !unreadOnly ||
+    todayOnly ||
+    types.length > 0 ||
+    keyword !== null ||
+    gatewayOnly ||
+    query.trim() !== "";
 
   const statCard: CSSProperties = {
     background: "var(--surface)",
@@ -1205,7 +1263,11 @@ export function App() {
                 label={c.category}
                 count={c.count}
                 active={categoryFilter === c.category}
-                onClick={() => setCategoryFilter(c.category)}
+                onClick={() => {
+                  setCategoryFilter(c.category);
+                  // 分类情报区同步切到同一分类，首屏立刻能看到变化
+                  setZoneCategory(c.category);
+                }}
               />
             ))}
           </div>
@@ -1267,6 +1329,25 @@ export function App() {
               onClick={() => setSearchScope("all")}
             />
           </div>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "4px 20px" }}>
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="focus-ring"
+              style={{
+                background: "none",
+                border: "none",
+                color: "var(--accent)",
+                fontSize: 12.5,
+                fontWeight: 600,
+                cursor: "pointer",
+                padding: "10px 0 0",
+                minHeight: 44,
+                borderRadius: 4,
+              }}
+            >
+              清除全部筛选
+            </button>
           <button
             type="button"
             aria-expanded={statusOpen}
@@ -1285,6 +1366,7 @@ export function App() {
           >
             {statusOpen ? "收起来源状态" : "来源状态与最后刷新"} {statusOpen ? "▲" : "▼"}
           </button>
+          </div>
           {statusOpen && data && (
             <div style={{ marginTop: 6 }}>
               {(data.sources ?? []).map((s) => (
@@ -1300,7 +1382,55 @@ export function App() {
           )}
         </section>
 
-        {/* 首页三区（仅目录四站） */}
+        {/* 筛选生效横幅：任一筛选偏离默认时出现在筛选卡正下方，
+            数字随每次点按实时变化，首屏即可确认筛选已生效 */}
+        {data && filtersActive && (
+          <div
+            role="status"
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              gap: "4px 14px",
+              background: "var(--space-surface-alt)",
+              border: "1px solid var(--border)",
+              borderRadius: 10,
+              padding: "10px 14px",
+              marginBottom: 16,
+              fontSize: 13.5,
+            }}
+          >
+            <span aria-live="polite" style={{ fontVariantNumeric: "tabular-nums" }}>
+              当前筛选：共 <strong>{sorted.length}</strong> 条结果
+              {query.trim() !== "" && (
+                <>
+                  （搜索「{query.trim()}」· 范围{" "}
+                  {searchScope === "catalog" ? "目录四站" : "全库"}）
+                </>
+              )}
+            </span>
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="focus-ring"
+              style={{
+                background: "none",
+                border: "none",
+                color: "var(--accent)",
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: "pointer",
+                padding: "4px 0",
+                minHeight: 32,
+                borderRadius: 4,
+              }}
+            >
+              清除全部筛选
+            </button>
+          </div>
+        )}
+
+        {/* 首页三区（仅目录四站，随筛选联动） */}
         {data && (
           <>
             {newToday.length > 0 && (
@@ -1414,6 +1544,27 @@ export function App() {
                 ? "可以点上方刷新重新抓取；各来源状态如下。"
                 : "可以放宽筛选条件（关掉「仅看未读 / 仅看今日精选」，或把来源、分类切回「全部」，或清空搜索词）再看。"}
             </p>
+            {data.total > 0 && (
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="focus-ring"
+                style={{
+                  background: "var(--accent)",
+                  color: "var(--on-accent)",
+                  border: "none",
+                  borderRadius: 10,
+                  padding: "10px 22px",
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  minHeight: 44,
+                  marginBottom: 16,
+                }}
+              >
+                清除全部筛选
+              </button>
+            )}
             <div style={{ maxWidth: 520, margin: "0 auto", textAlign: "left" }}>
               {data.sources.map((s) => (
                 <SourceLine key={s.source} s={s} />
@@ -1423,6 +1574,17 @@ export function App() {
         )}
         {data && sorted.length > 0 && (
           <>
+            <p
+              aria-live="polite"
+              style={{
+                fontSize: 13,
+                color: "var(--dim)",
+                margin: "0 0 10px",
+                fontVariantNumeric: "tabular-nums",
+              }}
+            >
+              共 {sorted.length} 条 · 第 {currentPage} / {pageCount} 页
+            </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {pageItems.map((p) => (
                 <PostCard

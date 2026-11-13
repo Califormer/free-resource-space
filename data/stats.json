@@ -1,10 +1,10 @@
 {
-  "exportedAtUTC": "2026-11-13T06:35:03.821427Z",
-  "lastRefreshAt": "2026-11-13T06:13:56.657Z",
+  "exportedAtUTC": "2026-11-13T08:30:39.251Z",
+  "lastRefreshAt": "2026-11-13T08:13:59.565Z",
   "cap": 700,
-  "total": 612,
-  "unreadCount": 608,
-  "todayPickCount": 102,
+  "total": 624,
+  "unreadCount": 620,
+  "todayPickCount": 110,
   "categoryCounts": [
     {
       "category": "大模型 API",
@@ -29,34 +29,34 @@
   ],
   "keywordCounts": [
     {
-      "count": 2,
       "id": "gpt",
-      "label": "GPT"
+      "label": "GPT",
+      "count": 2
     },
     {
-      "count": 10,
       "id": "claude",
-      "label": "Claude"
+      "label": "Claude",
+      "count": 12
     },
     {
-      "count": 4,
       "id": "muse",
-      "label": "Muse"
+      "label": "Muse",
+      "count": 4
     },
     {
-      "count": 13,
       "id": "gemini",
-      "label": "Gemini"
+      "label": "Gemini",
+      "count": 13
     },
     {
-      "count": 0,
       "id": "vps",
-      "label": "VPS"
+      "label": "VPS",
+      "count": 0
     },
     {
-      "count": 1,
       "id": "jiakuan",
-      "label": "家宽IP"
+      "label": "家宽IP",
+      "count": 1
     }
   ],
   "catalogSources": [
@@ -68,11 +68,11 @@
   "scheduleNote": "每小时自动刷新一次（定时任务与手动刷新走同一流水线）",
   "sourceStoredCounts": {
     "linuxdo": 2,
-    "v2ex": 29,
+    "v2ex": 40,
     "nodeseek": 7,
     "x": 0,
     "threads": 5,
-    "sliverkiss": 17,
+    "sliverkiss": 18,
     "lanmao": 338,
     "aihot": 57,
     "jidan": 26,
